@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.task.TaskUtil.getLatestValue;
@@ -53,6 +55,14 @@ public class ActivityService {
         updateTaskIfRequired(activity.getTaskId(), activity.getStatusCode(), activity.getTypeCode());
     }
 
+    public Duration durationForWork(Task task) {
+        return getDurationForActivity(task, "in_progress", "ready_for_review");
+    }
+
+    public Duration durationForTest(Task task) {
+        return getDurationForActivity(task, "ready_for_review", "done");
+    }
+
     private void updateTaskIfRequired(long taskId, String activityStatus, String activityType) {
         if (activityStatus != null || activityType != null) {
             Task task = taskRepository.getExisted(taskId);
@@ -72,5 +82,16 @@ public class ActivityService {
                 task.setTypeCode(latestType);
             }
         }
+    }
+
+    private Duration getDurationForActivity(Task task, String statusCode1, String statusCode2) {
+        LocalDateTime start = LocalDateTime.MIN;
+        LocalDateTime end = LocalDateTime.MIN;
+        List<Activity> activities = handler.getRepository().findAllByTaskIdOrderByUpdatedDesc(task.id());
+        for (Activity activity : activities) {
+            if (activity.getStatusCode().equals(statusCode1)) start = activity.getUpdated();
+            if (activity.getStatusCode().equals(statusCode2)) end = activity.getUpdated();
+        }
+        return Duration.between(start, end);
     }
 }

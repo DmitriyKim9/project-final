@@ -34,6 +34,6 @@
 5. -
 6. Сделать рефакторинг метода com.javarush.jira.bugtracking.attachment.FileUtil#upload.
 7. -
-8. --
+8. Добавить подсчет времени сколько задача находилась в работе и тестировании.(ActiveService.java)
 9. Написать Dockerfile для основного сервера.
 10. Написать docker-compose файл для запуска контейнера сервера вместе с БД и nginx.

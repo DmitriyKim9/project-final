@@ -132,8 +132,7 @@ values ('Data', 'epic', 'in_progress', 1, 1,
         now() + random() * interval '5 minutes' + random() * interval '20 seconds'), ---- project 2 -------------
        ('Title', 'task', 'todo', 2, 2, now() + random() * interval '5 minutes' + random() * interval '20 seconds'),
        ('Title', 'task', 'todo', 2, 2, now() + random() * interval '5 minutes' + random() * interval '20 seconds'),
-       ('Title', 'task', 'in_progress', 2, 2,
-        now() + random() * interval '5 minutes' + random() * interval '20 seconds'),
+       ('Title', 'task', 'in_progress', 2, 2,now() + random() * interval '5 minutes' + random() * interval '20 seconds'),
        ('Title', 'task', 'in_progress', 2, 2,
         now() + random() * interval '5 minutes' + random() * interval '20 seconds'),
        ('Title', 'task', 'in_progress', 2, 2,
@@ -320,8 +319,14 @@ INSERT INTO ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, E
                      PRIORITY_CODE)
 values (6, 1, '2023-05-15 09:05:10', null, 'Data', null, 3, 'epic', 'in_progress', 'low'),
        (5, 1, '2023-05-15 12:25:10', null, 'Data', null, null, null, null, 'normal'),
-       (6, 1, '2023-05-15 14:05:10', null, 'Data', null, 4, null, null, null), ---task 118----
+       (6, 1, '2023-05-15 14:05:10', null, 'Data', null, 4, null, null, null),---task 118----
        (11, 118, '2023-05-16 10:05:10', null, 'UI tab of tasks', null, 4, 'task', 'in_progress', 'normal'),
        (5, 118, '2023-05-16 11:10:10', null, 'UI tab of tasks', null, null, null, null, 'high'),
        (11, 118, '2023-05-16 12:30:10', null, 'UI tab of tasks', null, 2, null, null, null);
 
+--changeset dmitriykim:change_UK_USER_BELONG
+
+insert into ACTIVITY (AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE )
+values (11, 11, '2024-03-16 10:05:10', 'in_progress'),
+       (11, 11, '2024-03-16 23:10:00', 'ready_for_review'),
+       (11, 11, '2024-03-17 09:01:30', 'done');
