@@ -9,20 +9,19 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - ./prod.env
+      - sensitive-data.env
     depends_on:
       - db
       - nginx
     networks:
       - backend
   db:
-
     container_name: db
     image: postgres:latest
     ports:
       - "5432:5432"
     env_file:
-      - ./prod.env
+      - sensitive-data.env
     networks:
       - backend
 
