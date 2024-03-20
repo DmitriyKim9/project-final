@@ -37,3 +37,11 @@
 8. Добавить подсчет времени сколько задача находилась в работе и тестировании.(ActiveService.java)
 9. Написать Dockerfile для основного сервера.
 10. Написать docker-compose файл для запуска контейнера сервера вместе с БД и nginx.
+11. Добавить локализацию минимум на двух языках для шаблонов писем (mails) и стартовой страницы index.html.
+    Локализацию можно проверить по ссылкам: <br>http://localhost:8080/?lang=en <br> http://localhost:8080/?lang=ru
+
+Добавлена возможность работать с профилем dev. Пердварительно нужно развеврнуть базу PosgresSQL локально.
+(Ниже пример развертывания базы PosgresSQL через докер.)
+```
+docker run -p 5432:5432 --name postgres-db -e POSTGRES_USER=jira -e POSTGRES_PASSWORD=JiraRush -e POSTGRES_DB=jira -e PGDATA=/var/lib/postgresql/data/pgdata -v ./pgdata:/var/lib/postgresql/data -d postgres
+```

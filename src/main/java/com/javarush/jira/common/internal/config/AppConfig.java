@@ -8,6 +8,7 @@ import com.javarush.jira.common.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +20,12 @@ import org.springframework.core.env.Profiles;
 import org.springframework.http.ProblemDetail;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.sql.DataSource;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -88,6 +93,17 @@ public class AppConfig {
         dataSourceBuilder.url("jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE");
         dataSourceBuilder.username("sa");
         dataSourceBuilder.password("password");
+        return dataSourceBuilder.build();
+    }
+
+    @Bean
+    @Profile("dev")
+    public DataSource getDataSourceForLocalPostgres(){
+        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.postgresql.Driver");
+        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/jira");
+        dataSourceBuilder.username("jira");
+        dataSourceBuilder.password("JiraRush");
         return dataSourceBuilder.build();
     }
 }
