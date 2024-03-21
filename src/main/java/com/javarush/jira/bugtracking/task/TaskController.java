@@ -156,4 +156,16 @@ public class TaskController {
             this(taskTo, new LinkedList<>());
         }
     }
+
+    @GetMapping("/time-in-progress/{id}")
+    public String getTimeInProgress(@PathVariable long id) {
+        log.info("get time in progress for task by id={}", id);
+        return taskService.getTimeForTask(id, "in_progress", "ready_for_review");
+    }
+
+    @GetMapping("/time-in-testing/{id}")
+    public String getTimeInTesting(@PathVariable long id) {
+        log.info("get time in testing for task by id={}", id);
+        return taskService.getTimeForTask(id, "ready_for_review", "done");
+    }
 }

@@ -15,11 +15,12 @@ import com.javarush.jira.common.util.Util;
 import com.javarush.jira.login.AuthUser;
 import com.javarush.jira.ref.RefType;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -140,5 +141,18 @@ public class TaskService {
         if (!userType.equals(possibleUserType)) {
             throw new DataConflictException(String.format(assign ? CANNOT_ASSIGN : CANNOT_UN_ASSIGN, userType, task.getStatusCode()));
         }
+    }
+
+    public String getTimeForTask(long id, String statusCode1, String statusCode2) {
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        List<Activity> activities = activityHandler.getRepository().findAllByTaskIdOrderByUpdatedDesc(id);
+        for (Activity activity : activities) {
+            if (activity.getStatusCode()!=null && activity.getStatusCode().equals(statusCode1)) start = activity.getUpdated();
+            if (activity.getStatusCode()!=null && activity.getStatusCode().equals(statusCode2)) end = activity.getUpdated();
+        }
+        if ((start == null) || (end == null)) throw new DataConflictException("Wrong update time");
+        Duration duration = Duration.between(start, end);
+        return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss", true);
     }
 }
